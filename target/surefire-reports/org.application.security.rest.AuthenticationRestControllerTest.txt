@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.application.security.rest.AuthenticationRestControllerTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.284 s - in org.application.security.rest.AuthenticationRestControllerTest
