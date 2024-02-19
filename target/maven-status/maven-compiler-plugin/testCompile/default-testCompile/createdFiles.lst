@@ -1,9 +1,0 @@
-org/application/util/LogInUtils$AuthenticationResponse.class
-org/application/security/rest/UserRestControllerTest.class
-org/application/util/AbstractRestControllerTest.class
-org/application/JwtDemoApplicationTest.class
-org/application/security/rest/AuthenticationRestControllerTest.class
-org/application/util/LogInUtils.class
-org/application/rest/AdminProtectedRestControllerTest.class
-org/application/rest/PersonRestControllerTest.class
-org/application/security/SecurityUtilsTest.class

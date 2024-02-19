@@ -1,8 +1,0 @@
-/opt/source/src/test/java/org/application/rest/PersonRestControllerTest.java
-/opt/source/src/test/java/org/application/security/rest/UserRestControllerTest.java
-/opt/source/src/test/java/org/application/JwtDemoApplicationTest.java
-/opt/source/src/test/java/org/application/security/rest/AuthenticationRestControllerTest.java
-/opt/source/src/test/java/org/application/security/SecurityUtilsTest.java
-/opt/source/src/test/java/org/application/util/AbstractRestControllerTest.java
-/opt/source/src/test/java/org/application/rest/AdminProtectedRestControllerTest.java
-/opt/source/src/test/java/org/application/util/LogInUtils.java

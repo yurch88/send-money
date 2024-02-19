@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.application.rest.AdminProtectedRestControllerTest
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.64 s - in org.application.rest.AdminProtectedRestControllerTest
