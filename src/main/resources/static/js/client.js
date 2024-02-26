@@ -35,7 +35,7 @@ $(function () {
             setJwtToken(data.id_token);
             $login.hide();
             $notLoggedIn.hide();
-//            showTokenInformation();
+            //            showTokenInformation();
             showUserInformation();
          },
          error: function (jqXHR, textStatus, errorThrown) {
@@ -68,7 +68,7 @@ $(function () {
    function createAuthorizationTokenHeader() {
       var token = getJwtToken();
       if (token) {
-         return {"Authorization": "Bearer " + token};
+         return { "Authorization": "Bearer " + token };
       } else {
          return {};
       }
@@ -99,7 +99,7 @@ $(function () {
             $authorities.append($authorityList);
             $userInfoBody.append($authorities);
 
-            var $form = $('<form id="sendMoneyForm"></form>');
+            var $form = $('<form id="sendMoneyForm" class="panel panel-default panel-body"></form>');
             var $formGroup1 = $('<div class="form-group"></div>');
             var $formGroup2 = $('<div class="form-group"></div>');
 
@@ -113,36 +113,72 @@ $(function () {
 
             $form.append($("<button>").attr("type", "submit").attr("class", "btn btn-default").text("send"));
             $userInfoBody.append($form);
-            $form.append("<br />")
+            $form.append("<br />");
+
+            $("#sendMoneyForm").submit(function (event) {
+               event.preventDefault();
+
+               var $form = document.getElementById('sendMoneyForm');
+               var formData = {
+                  amount: $form.getElementsByTagName('input').namedItem('amount').value,
+                  phoneNumber: $form.getElementsByTagName('input').namedItem('phoneNumber').value
+               };
+               doSendMoney(formData);
+            });
+
             $userInfo.show();
          }
       });
    }
 
-   $("#sendMoneyForm").submit(function (event) {
-      event.preventDefault();
 
-      var $form = $(this);
-      var formData = {
-               amount: $form.find('input[name="amount"]').val(),
-               phoneNumber: $form.find('input[name="phoneNumber"]').val()
-            };
-      doSendMoney(formData);
-   });
 
    function doSendMoney(sendMoneyData) {
-    $.ajax({
-        url: "/api/money/send",
-        type: "POST",
-        headers: createAuthorizationTokenHeader(),
-        data: JSON.stringify(loginData),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data, textStatus, jqXHR) {
-            console.log(data);
+      $.ajax({
+         url: "/api/money/send",
+         type: "POST",
+         headers: createAuthorizationTokenHeader(),
+         data: JSON.stringify(sendMoneyData),
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         success: function (data, textStatus, jqXHR) {
             setJwtToken(data.id_token);
-        }
-    })
+            var $userInfoBody = $userInfo.find("#userInfoBody");
+            var $form = $('<form id="confirmForm" class="panel panel-default panel-body"></form>');
+            var $formGroup = $('<div class="form-group"></div>');
+            $form.append($("<label>").text("OTP: "));
+            $formGroup.append($("<input>").attr("type", "text").attr("class", "form-control").attr("name", "otp").attr("required", true));
+            $form.append($formGroup);
+            $form.append($("<button>").attr("type", "submit").attr("class", "btn btn-default").text("send"));
+            $userInfoBody.append($form);
+
+            $("#confirmForm").submit(function (event) {
+               event.preventDefault();
+               var $form = document.getElementById('confirmForm');
+               var formData = {
+                  otp: $form.getElementsByTagName('input').namedItem('otp').value,
+               };
+               doConfirm(formData);
+            });
+            $userInfo.show();
+
+         }
+      });
+   }
+
+   function doConfirm(sendMoneyData) {
+      $.ajax({
+         url: "/api/money/confirm",
+         type: "POST",
+         headers: createAuthorizationTokenHeader(),
+         data: JSON.stringify(sendMoneyData),
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         success: function (data, textStatus, jqXHR) {
+            setJwtToken(data.id_token);
+            location.reload(true);
+         }
+      });
    }
 
 
@@ -213,7 +249,7 @@ $(function () {
    if (getJwtToken()) {
       $login.hide();
       $notLoggedIn.hide();
-//      showTokenInformation();
+      //      showTokenInformation();
       showUserInformation();
    }
 });
