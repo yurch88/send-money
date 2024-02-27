@@ -22,6 +22,7 @@ public class SecurityUtils {
     */
    public static Optional<String> getCurrentUsername() {
       final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      System.out.println(SecurityContextHolder.getContext());
 
       if (authentication == null) {
          LOG.debug("no authentication in security context found");

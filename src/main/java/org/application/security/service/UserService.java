@@ -22,4 +22,10 @@ public class UserService {
    public Optional<User> getUserWithAuthorities() {
       return SecurityUtils.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);
    }
+//   @Transactional(readOnly = true)
+   public Optional<User> updateUser(User user) {
+      user.setId(getUserWithAuthorities().get().getId());
+      userRepository.updateFirstname(user.getId(), user.getFirstname());
+      return getUserWithAuthorities();
+   }
 }

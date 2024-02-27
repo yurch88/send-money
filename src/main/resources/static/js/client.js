@@ -76,13 +76,14 @@ $(function () {
 
    function showUserInformation() {
       $.ajax({
-         url: "/api/user",
+         url: "/api/user/get",
          type: "GET",
          contentType: "application/json; charset=utf-8",
          dataType: "json",
          headers: createAuthorizationTokenHeader(),
          success: function (data, textStatus, jqXHR) {
             var $userInfoBody = $userInfo.find("#userInfoBody");
+            $userInfoBody.append($(`<h1>Hello ${data.firstname}</h1>`));
 
             $userInfoBody.append($("<div>").text("Username: " + data.username));
             $userInfoBody.append($("<div>").text("Firstname: " + data.firstname));
