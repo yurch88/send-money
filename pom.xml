@@ -4,11 +4,11 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>org.application</groupId>
-   <artifactId>jwtdemo</artifactId>
+   <artifactId>sendmoney</artifactId>
    <version>2.0.0</version>
    <packaging>jar</packaging>
 
-   <name>jwtdemo</name>
+   <name>sendmoney</name>
    <description>Demo project for JWT with Spring Security</description>
 
    <parent>
