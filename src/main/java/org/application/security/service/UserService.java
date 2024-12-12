@@ -26,6 +26,7 @@ public class UserService {
    public Optional<User> updateUser(User user) {
       user.setId(getUserWithAuthorities().get().getId());
       userRepository.updateFirstname(user.getId(), user.getFirstname());
+      userRepository.updateLastname(user.getId(), user.getLastname());
       return getUserWithAuthorities();
    }
 }

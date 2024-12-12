@@ -39,7 +39,7 @@ $(function () {
             showUserInformation();
          },
          error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status === 401) {
+            if (jqXHR.status !== 200) {
                $('#loginErrorModal')
                   .modal("show")
                   .find(".modal-body")
@@ -65,6 +65,34 @@ $(function () {
       $notLoggedIn.show();
    }
 
+
+   function doUpdateProfile(userData) {
+      $.ajax({
+         url: "/api/user/update",
+         type: "PUT",
+         headers: createAuthorizationTokenHeader(),
+         data: JSON.stringify(userData),
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         success: function (data, textStatus, jqXHR) {
+            location.reload(true);
+         },
+         error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status !== 200) {
+               $('#userInfo')
+                  .modal("show")
+                  .find(".modal-body")
+                  .empty()
+                  .html("<p>" + jqXHR.responseJSON.message + "</p>");
+            } else {
+               throw new Error("an unexpected error occured: " + errorThrown);
+            }
+         }
+      });
+   }
+
+
+
    function createAuthorizationTokenHeader() {
       var token = getJwtToken();
       if (token) {
@@ -86,8 +114,39 @@ $(function () {
             $userInfoBody.append($(`<h1>Hello ${data.firstname}</h1>`));
 
             $userInfoBody.append($("<div>").text("Username: " + data.username));
+            $userInfo.show();
+
             $userInfoBody.append($("<div>").text("Firstname: " + data.firstname));
             $userInfoBody.append($("<div>").text("Lastname: " + data.lastname));
+
+            var $userNameForm = $('<form id="updateUsername" class="panel panel-default panel-body"></form>');
+            var $userNameFormGroup1 = $('<div class="form-group"></div>');
+            var $userNameFormGroup2 = $('<div class="form-group"></div>');
+
+            $userNameForm.append($("<label>").text("Firstname: "));
+            $userNameFormGroup1.append($("<input>").attr("type", "text").attr("class", "form-control").attr("name", "firstname").attr("required", true));
+            $userNameForm.append($userNameFormGroup1);
+
+            $userNameForm.append($("<label>").text("Lastname: "));
+            $userNameFormGroup2.append($("<input>").attr("type", "text").attr("class", "form-control").attr("name", "lastname").attr("required", true));
+            $userNameForm.append($userNameFormGroup2);
+
+            $userNameForm.append($("<button>").attr("type", "submit").attr("class", "btn btn-default").text("send"));
+            $userInfoBody.append($userNameForm);
+
+            $("#updateUsername").submit(function (event) {
+               event.preventDefault();
+               var $form = document.getElementById('updateUsername');
+               var formData = {
+                  username: data.username,
+                  firstname: $form.getElementsByTagName('input').namedItem('firstname').value,
+                  lastname: $form.getElementsByTagName('input').namedItem('lastname').value,
+                  email: data.email,
+                  phonenumber: data.phonenumber
+               };
+               doUpdateProfile(formData);
+            });
+
             $userInfoBody.append($("<div>").text("Email: " + data.email));
             $userInfoBody.append($("<div>").text("Phone Number: " + data.phonenumber));
             $userInfoBody.append($("<div>").text("Amount: " + data.amount));
