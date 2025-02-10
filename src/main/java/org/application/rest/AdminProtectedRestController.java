@@ -21,6 +21,12 @@ public class AdminProtectedRestController {
       return ResponseEntity.ok(new HiddenMessage("this is a hidden message!"));
    }
 
+   @GetMapping("/errormessage")
+   public void redirectErrorMsg(@RequestParam("error") String error,
+                                HttpServletResponse response) throws IOException {
+      String encodedError = URLEncoder.encode(error, StandardCharsets.UTF_8.toString());
+      response.sendRedirect("/index.html?error=" + encodedError);
+   }
    private static class HiddenMessage {
 
       private final String message;
